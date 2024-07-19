@@ -1,8 +1,9 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/toaster";
 
 import localFont from "next/font/local";
+import Header from "@/components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,6 +33,7 @@ export default function RootLayout({ children }) {
       <body className={`${calSans.variable} ${inter.className}`}>
         <main className="absolute inset-0 -z-10 h-max w-full md:bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] md:[background-size:16px_16px] md:[mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
           <div className="flex min-h-screen w-full flex-col space-y-6 p-4 md:p-8">
+            <Header />
             {children}
           </div>
         </main>
@@ -40,5 +42,3 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
-
-
