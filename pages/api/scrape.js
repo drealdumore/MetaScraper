@@ -4,10 +4,10 @@ import axios from "axios";
 import cheerio from "cheerio";
 
 export default async function handler(req, res) {
-  const { url } = req.query;
+  let { url } = req.query;
 
-  if (!url || typeof url !== "string") {
-    return res.status(400).json({ error: "Invalid URL" });
+  if (!url || typeof url !== "string" || (!url.startsWith("https://") && !url.startsWith("http://") && !url.includes("www."))) {
+    return res.status(400).json({ error: "Invalid URL. Please ensure the URL includes 'https://' or 'www.'" });
   }
 
   try {
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
     // Extract the og:image
     const ogImage = $('meta[property="og:image"]').attr("content");
 
-    console.log({ title, description, ogImage, url });
+    // console.log({ title, description, ogImage, url });
 
     // Respond with the extracted information
     res.status(200).json({ title, description, ogImage, url });

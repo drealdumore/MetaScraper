@@ -34,22 +34,7 @@ const Card = ({ data }) => {
       <div className="flex flex-col gap-1">
         <h2 className="line-clamp-4 text-lg leading-snug">{data.title}</h2>
         <span className="line-clamp-4 inline-flex items-center gap-1 text-sm text-gray-500">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="lucide lucide-link2 "
-          >
-            <path d="M9 17H7A5 5 0 0 1 7 7h2"></path>
-            <path d="M15 7h2a5 5 0 1 1 0 10h-2"></path>
-            <line x1="8" x2="16" y1="12" y2="12"></line>
-          </svg>
+          <LinkSvg />
           {formatUrl(data.url)}
         </span>
         <span className="line-clamp-6 text-sm">{data.description}</span>
@@ -59,3 +44,24 @@ const Card = ({ data }) => {
 };
 
 export default Card;
+
+function LinkSvg() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-link2 "
+    >
+      <path d="M9 17H7A5 5 0 0 1 7 7h2"></path>
+      <path d="M15 7h2a5 5 0 1 1 0 10h-2"></path>
+      <line x1="8" x2="16" y1="12" y2="12"></line>
+    </svg>
+  );
+}
