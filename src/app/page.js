@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
 import { customImageLoader } from "@/utils/customImageLoader";
-import Spinner from "@/components/Spinner"; // Import the Spinner component
+import Spinner from "@/components/Spinner";
 
 export default function Home() {
   const [url, setUrl] = useState("");
@@ -28,7 +28,7 @@ export default function Home() {
     } catch (err) {
       setError("An error occurred while fetching data");
     } finally {
-      setLoading(false); // Set loading to false when the request ends
+      setLoading(false);
     }
   };
 
@@ -86,6 +86,7 @@ export default function Home() {
         </button>
       </div>
       {loading && <Spinner />} {/* Show the Spinner while loading */}
+
       {error && <div>Error: {error}</div>}
       {data && (
         <Link
