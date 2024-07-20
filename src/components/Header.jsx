@@ -1,12 +1,25 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { customImageLoader } from "@/utils/customImageLoader";
 
 const Header = () => {
   return (
     <header className="container mx-auto flex max-w-5xl items-center justify-between px-4 py-2">
       <Link href="/">
-        <div className="text-xl font-cal tetext-neutral-800">MetaScraper.</div>
+        <div className="text-xl font-cal inline-flex justify-center items-center  text-neutral-800">
+          {/* <Image
+            loader={customImageLoader}
+            src="/logo.png"
+            loading="eager"
+            alt="logo"
+            height={20}
+            width={20}
+          /> */}
+          <p>MetaScraper.</p>
+        </div>
       </Link>
       <nav className="flex gap-6">
         <Link
