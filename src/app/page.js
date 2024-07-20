@@ -53,6 +53,7 @@ export default function Home() {
           title, OG image, and description.
         </h2>
       </div>
+
       <form
         className="flex w-full max-w-sm items-center space-x-2"
         onSubmit={handleScrape}
@@ -78,9 +79,8 @@ export default function Home() {
       {error && <ErrorBadge error={`Error: ${error}`} />}
 
       {data && (
-        <div className="mx-auto my-16 flex max-w-xl flex-col items-center gap-4">
           <Card data={data} />
-        </div>
+        
       )}
     </main>
   );
