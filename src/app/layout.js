@@ -22,7 +22,6 @@ export const metadata = {
     "description",
     "title",
     "SEO",
-    "Next.js",
   ],
   icon: "/favicon.ico",
   "og:image": "/openGraph.png",
