@@ -13,7 +13,7 @@ MetaScraper is a powerful web application built with Next.js that allows users t
 
 ## Demo
 
-Check out the live demo [here](https://example.com).
+Check out the live demo [here](https://meta-scrapper.vercel.app/).
 
 ## Installation
 
