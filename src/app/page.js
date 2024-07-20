@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
 import Spinner from "@/components/Spinner";
 import Card from "@/components/Card";
 import Badge from "@/components/Badge";
