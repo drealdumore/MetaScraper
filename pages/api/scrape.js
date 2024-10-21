@@ -6,33 +6,91 @@ import cheerio from "cheerio";
 export default async function handler(req, res) {
   let { url } = req.query;
 
-  if (!url || typeof url !== "string" || (!url.startsWith("https://") && !url.startsWith("http://") && !url.includes("www."))) {
-    return res.status(400).json({ error: "Invalid URL. Please ensure the URL includes 'https://' or 'www.'" });
+  try {
+    new URL(url);
+  } catch (e) {
+    return res
+      .status(400)
+      .json({ error: "Invalid URL. Please provide a valid URL." });
+  }
+
+  if (!url.startsWith("https://") && !url.startsWith("http://")) {
+    return res
+      .status(400)
+      .json({ error: "URL must include 'https://' or 'http://'." });
   }
 
   try {
-    // Fetch the HTML content of the URL
     const { data } = await axios.get(url);
-
-    // Load the HTML content into cheerio
     const $ = cheerio.load(data);
 
-    // Extract the title
-    const title = $("head title").text();
-
-    // Extract the meta description
+    const title =
+      $("head title").text() || $('meta[property="og:title"]').attr("content");
     const description =
       $('meta[name="description"]').attr("content") ||
-      $('meta[name="Description"]').attr("content");
+      $('meta[property="og:description"]').attr("content");
+    const keywords = $('meta[name="keywords"]').attr("content");
+    const author = $('meta[name="author"]').attr("content");
 
-    // Extract the og:image
+    const robots =
+      $('meta[name="robots"]').attr("content") ||
+      "No robots directives available";
+
     const ogImage = $('meta[property="og:image"]').attr("content");
+    const ogTitle = $('meta[property="og:title"]').attr("content");
+    const ogDescription = $('meta[property="og:description"]').attr("content");
+    const twitterImage = $('meta[name="twitter:image"]').attr("content");
+    const twitterTitle = $('meta[name="twitter:title"]').attr("content");
+    const twitterDescription = $('meta[name="twitter:description"]').attr(
+      "content"
+    );
 
-    // console.log({ title, description, ogImage, url });
+    const canonical = $('link[rel="canonical"]').attr("href");
 
-    // Respond with the extracted information
-    res.status(200).json({ title, description, ogImage, url });
+    const ogType = $('meta[property="og:type"]').attr("content");
+    const ogUrl = $('meta[property="og:url"]').attr("content");
+    const ogLocale = $('meta[property="og:locale"]').attr("content");
+
+    const socialLinks = [];
+    $("a[href]").each((_, element) => {
+      const link = $(element).attr("href");
+      if (link.includes("twitter.com"))
+        socialLinks.push({ platform: "Twitter", url: link });
+      if (link.includes("facebook.com"))
+        socialLinks.push({ platform: "Facebook", url: link });
+      if (link.includes("linkedin.com"))
+        socialLinks.push({ platform: "LinkedIn", url: link });
+      if (link.includes("instagram.com"))
+        socialLinks.push({ platform: "Instagram", url: link });
+    });
+
+    const metadata = {
+      title: title || ogTitle || twitterTitle || "No title available",
+      description:
+        description ||
+        ogDescription ||
+        twitterDescription ||
+        "No description available",
+      keywords: keywords || "No keywords available",
+      author: author || "No author available",
+      robots: robots || "No robots directives available",
+      ogImage: ogImage || twitterImage || "No image available",
+      ogType: ogType || "No Open Graph type available",
+      ogUrl: ogUrl || url,
+      ogLocale: ogLocale || "No locale available",
+      canonical: canonical || url,
+      socialLinks:
+        socialLinks.length > 0
+          ? socialLinks
+          : "No social media links available",
+    };
+
+    res.status(200).json(metadata);
   } catch (error) {
-    res.status(500).json({ error: "Failed to scrape the URL" });
+    console.error(error);
+    res.status(500).json({
+      error:
+        "Failed to scrape the URL. Please ensure the site is reachable and the URL is correct.",
+    });
   }
 }
