@@ -2,7 +2,7 @@
 
 MetaScraper is a powerful web application built with Next.js that allows users to easily extract and retrieve metadata from any website. The extracted metadata includes the title, OG image, description, and more, making it an essential tool for web scraping and SEO optimization.
 
-![MetaScraper](./public/openGraph.png)
+![MetaScraper](./public/og.png)
 
 ## Features
 
