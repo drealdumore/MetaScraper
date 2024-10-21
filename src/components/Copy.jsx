@@ -42,7 +42,7 @@ const CopyButton = ({ source }) => {
         disabled={copied}
       >
         <div className={`transition-all scale-100 opacity-100 h-[12px]`}>
-          {!copied ? <Copy /> : <Success />}
+          {copied ? <Success /> : <Copy />}
         </div>
       </button>
     </div>
