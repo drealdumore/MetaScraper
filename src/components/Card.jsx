@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { customImageLoader } from "@/utils/customImageLoader";
+import CopyButton from "./Copy";
 
 const Card = ({ data }) => {
   const formatUrl = (url) => {
@@ -15,31 +16,37 @@ const Card = ({ data }) => {
   };
 
   return (
-    <Link
-      className="thumbnail-shadow max-w-xl flex aspect-auto min-w-0 cursor-pointer flex-col gap-4 overflow-hidden rounded-xl bg-white p-4 transition-colors duration-300 hover:bg-gray-100"
-      href={data.url}
-      target="_blank"
-    >
-      <span className="aspect-[1200/630] overflow-hidden rounded-lg">
-        <Image
-          loader={customImageLoader}
-          src={data.ogImage}
-          alt={data.title}
-          width="1200"
-          height="630"
-          loading="eager"
-          className="aspect-[1200/630] animate-reveal rounded-lg border bg-cover bg-center bg-no-repeat object-cover"
-        />
-      </span>
-      <div className="flex flex-col gap-1">
-        <h2 className="line-clamp-4 text-lg leading-snug">{data.title}</h2>
-        <span className="line-clamp-4 inline-flex items-center gap-1 text-sm text-gray-500">
-          <LinkSvg />
-          {formatUrl(data.url)}
-        </span>
-        <span className="line-clamp-6 text-sm">{data.description}</span>
+    <div className="flex flex-col gap-2 px-2">
+      <div className="px-2 flex items-center justify-end">
+        <CopyButton source={data} />
       </div>
-    </Link>
+
+      <Link
+        className="thumbnail-shadow max-w-xl flex aspect-auto min-w-0 cursor-pointer flex-col gap-4 overflow-hidden rounded-xl bg-white p-4 transition-colors duration-300 hover:bg-gray-100"
+        href={data.ogUrl || data.canonical}
+        target="_blank"
+      >
+        <span className="aspect-[1200/630] overflow-hidden rounded-lg">
+          <Image
+            loader={customImageLoader}
+            src={data.ogImage}
+            alt={data.title}
+            width="1200"
+            height="630"
+            loading="eager"
+            className="aspect-[1200/630] animate-reveal rounded-lg border bg-cover bg-center bg-no-repeat object-cover"
+          />
+        </span>
+        <div className="flex flex-col gap-1">
+          <h2 className="line-clamp-4 text-lg leading-snug">{data.title}</h2>
+          <span className="line-clamp-4 inline-flex items-center gap-1 text-sm text-gray-500">
+            <LinkSvg />
+            {formatUrl(data.ogUrl || data.canonical)}
+          </span>
+          <span className="line-clamp-4 text-sm">{data.description}</span>
+        </div>
+      </Link>
+    </div>
   );
 };
 
