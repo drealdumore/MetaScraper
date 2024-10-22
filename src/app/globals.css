@@ -57,6 +57,10 @@
   .font-cal {
     font-family: var(--font-calSans);
   }
+
+  ::selection {
+    @apply bg-neutral-800 text-white;
+  }
 }
 
 @layer utilities {

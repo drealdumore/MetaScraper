@@ -64,7 +64,8 @@ export default function Home() {
         />
 
         <button
-          className="relative rounded-md bg-neutral-950 px-5 py-2 text-white duration-300 [transition-timing-function:cubic-bezier(0.175,0.885,0.32,1.275)] active:tranneutral-y-1 active:scale-x-110 active:scale-y-90"
+          disabled={!url}
+          className="rounded-md bg-neutral-950 disabled:bg-neutral-950/75 px-5 py-2 text-white duration-300 [transition-timing-function:cubic-bezier(0.175,0.885,0.32,1.275)] active:tranneutral-y-1 active:scale-x-110 active:scale-y-90"
           type="submit"
         >
           Scrape
