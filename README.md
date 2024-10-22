@@ -11,6 +11,18 @@ MetaScraper is a powerful web application built with Next.js that allows users t
 - Built with Next.js for server-side rendering and static site generation
 - Responsive and modern UI design
 
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org)
+- [Tailwind CSS](https://tailwindcss.com)
+- [Vercel](https://vercel.com)
+- [Logo](https://www.logoshaper.co/)
+- SCSS
+- Axios
+- Cheerio
+
+
 ## Demo
 
 Check out the live demo [here](https://meta-scrapper.vercel.app/).
