@@ -6,8 +6,8 @@ import React from "react";
 const Header = () => {
   return (
     <header className="container mx-auto flex max-w-5xl items-center justify-between px-4 py-2">
-      <Link href="/">
-        <div className="text-xl font-cal inline-flex justify-center items-center  text-neutral-800">
+      <Link href="/" aria-label="Go to home page">
+        <div className="text-xl font-cal inline-flex justify-center items-center text-neutral-800">
           <p>MetaScraper.</p>
         </div>
       </Link>
@@ -18,6 +18,7 @@ const Header = () => {
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex"
+          aria-label="Visit Twitter profile"
         >
           <TwitterIcon />
         </Link>
@@ -27,6 +28,7 @@ const Header = () => {
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex"
+          aria-label="Visit GitHub profile"
         >
           <GithubIcon />
         </Link>

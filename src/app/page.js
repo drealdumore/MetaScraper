@@ -41,7 +41,11 @@ export default function Home() {
   return (
     <main className="mx-auto flex max-w-xl flex-col items-center gap-4">
       <div className="mx-auto my-16 flex max-w-xl flex-col items-center gap-4">
-        <Badge title="Proudly Open Source ⚡️" />
+        <Badge
+          title="Proudly Open Source ⚡️"
+          href="https://github.com/Drealdumore/MetaScraper"
+          aria="Visit the GitHub repository for MetaScraper"
+        />
 
         <h1 className="text-center font-cal font_cal text-5xl leading-tight bg-gradient-to-tl from-0% from-[hsl(var(--muted))] to-30% to-[hsl(var(--foreground))] bg-clip-text text-transparent">
           MetaScraper.
@@ -55,11 +59,13 @@ export default function Home() {
       <form
         className="flex w-full max-w-sm items-center space-x-2"
         onSubmit={handleScrape}
+        aria-label="Metadata scraper form"
       >
         <input
           type="text"
           onChange={(e) => setUrl(e.target.value)}
           placeholder="Enter website URL"
+          aria-label="Website URL input"
           className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 duration-300 [transition-timing-function:cubic-bezier(0.175,0.885,0.32,1.275)]"
         />
 
@@ -67,6 +73,7 @@ export default function Home() {
           disabled={!url}
           className="rounded-md bg-neutral-950 disabled:bg-neutral-950/75 px-5 py-2 text-white duration-300 [transition-timing-function:cubic-bezier(0.175,0.885,0.32,1.275)] active:tranneutral-y-1 active:scale-x-110 active:scale-y-90"
           type="submit"
+          aria-label="Submit URL to scrape"
         >
           Scrape
         </button>

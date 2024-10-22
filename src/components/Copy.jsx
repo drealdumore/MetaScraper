@@ -22,6 +22,10 @@ const CopyButton = ({ source }) => {
     }
   };
 
+  const handleHover = () => {
+    setTimeout(() => setIsHovered(false), 1500);
+  };
+
   return (
     <div className="relative">
       {(copied || isHovered) && (
@@ -38,10 +42,11 @@ const CopyButton = ({ source }) => {
         onClick={handleCopy}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        onTouchStart={handleHover}
         aria-label={copied ? "Copied" : "Copy source"}
         disabled={copied}
       >
-        <div className={`transition-all scale-100 opacity-100 h-[12px]`}>
+        <div className="transition-all scale-100 cursor-pointer opacity-100 h-[12px]">
           {copied ? <Success /> : <Copy />}
         </div>
       </button>

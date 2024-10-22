@@ -16,7 +16,7 @@ const Card = ({ data }) => {
   };
 
   return (
-    <div className="flex flex-col gap-2 px-2">
+    <div className="flex flex-col gap-2 px-2" aria-label="Scraped data card">
       <div className="px-2 flex items-center justify-end">
         <CopyButton source={data} />
       </div>
