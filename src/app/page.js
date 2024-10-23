@@ -57,7 +57,7 @@ export default function Home() {
       </div>
 
       <form
-        className="flex w-full max-w-sm items-center space-x-2"
+        className="flex w-full max-w-sm items-center space-x-2 px-2"
         onSubmit={handleScrape}
         aria-label="Metadata scraper form"
       >
