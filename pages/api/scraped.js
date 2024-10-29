@@ -1,39 +1,46 @@
+// THIS IS THE OLD SCRAPE JS THAT SCRAPES EVEN THO THE METADATA ISN'T AVAILABLE
+// SOME RESPONSE:::
+// {
+//     "title": "TikTok - Make Your Day",
+//     "description": "No description available",
+//     "keywords": "No keywords available",
+//     "author": "No author available",
+//     "robots": "No robots directives available",
+//     "ogImage": "No image available",
+//     "ogType": "No Open Graph type available",
+//     "ogUrl": "https://www.tiktok.com/en/",
+//     "ogLocale": "No locale available",
+//     "canonical": "https://www.tiktok.com/en/",
+//     "socialLinks": "No social media links available"
+//   }
+// NOT GOOD.
+
+"use server";
+
 import axios from "axios";
 import cheerio from "cheerio";
 
-// Simple in-memory cache
-const cache = new Map();
-
 export default async function handler(req, res) {
-  const { url } = req.query;
+  let { url } = req.query;
 
-  // URL Validation
   try {
     new URL(url);
   } catch (e) {
-    return res.status(400).json({
-      error:
-        "Oops! That doesn't look like a valid URL. Please check and try again.",
-    });
+    return res
+      .status(400)
+      .json({ error: "Invalid URL. Please provide a valid URL." });
   }
 
-  // Check if URL starts with http or https
   if (!url.startsWith("https://") && !url.startsWith("http://")) {
-    return res.status(400).json({
-      error: "Please make sure your URL starts with 'https://' or 'http://'.",
-    });
-  }
-
-  // Check cache
-  if (cache.has(url)) {
-    return res.status(200).json(cache.get(url));
+    return res
+      .status(400)
+      .json({ error: "URL must include 'https://' or 'http://'." });
   }
 
   try {
     const { data } = await axios.get(url);
     const $ = cheerio.load(data);
 
-    // Extract metadata
     const title =
       $("head title").text() || $('meta[property="og:title"]').attr("content");
     const description =
@@ -41,6 +48,7 @@ export default async function handler(req, res) {
       $('meta[property="og:description"]').attr("content");
     const keywords = $('meta[name="keywords"]').attr("content");
     const author = $('meta[name="author"]').attr("content");
+
     const robots =
       $('meta[name="robots"]').attr("content") ||
       "No robots directives available";
@@ -55,6 +63,7 @@ export default async function handler(req, res) {
     );
 
     const canonical = $('link[rel="canonical"]').attr("href");
+
     const ogType = $('meta[property="og:type"]').attr("content");
     const ogUrl = $('meta[property="og:url"]').attr("content");
     const ogLocale = $('meta[property="og:locale"]').attr("content");
@@ -72,49 +81,33 @@ export default async function handler(req, res) {
         socialLinks.push({ platform: "Instagram", url: link });
     });
 
-    // Prepare metadata object
     const metadata = {
-      title: title || ogTitle || twitterTitle || "Title not found",
+      title: title || ogTitle || twitterTitle || "No title available",
       description:
         description ||
         ogDescription ||
         twitterDescription ||
-        "Description not found",
+        "No description available",
       keywords: keywords || "No keywords available",
-      author: author || "Author not specified",
+      author: author || "No author available",
       robots: robots || "No robots directives available",
       ogImage: ogImage || twitterImage || "No image available",
-      ogType: ogType || "Open Graph type not found",
+      ogType: ogType || "No Open Graph type available",
       ogUrl: ogUrl || url,
-      ogLocale: ogLocale || "Locale not specified",
+      ogLocale: ogLocale || "No locale available",
       canonical: canonical || url,
       socialLinks:
-        socialLinks.length > 0 ? socialLinks : "No social media links found",
+        socialLinks.length > 0
+          ? socialLinks
+          : "No social media links available",
     };
 
-    // Check for default values in metadata
-    const hasDefaultValues = Object.values(metadata).some(
-      (value) => value.includes("not found") || value.includes("available")
-    );
-
-    if (hasDefaultValues) {
-      return res
-        .status(400)
-        .json({ error: "The URL you provided doesn't have enough metadata." });
-    }
-
-    // Cache the result
-    cache.set(url, metadata);
-
-    // Return the metadata if all checks pass
     res.status(200).json(metadata);
   } catch (error) {
-    console.error("Error fetching URL:", error.message);
-
     console.error(error);
     res.status(500).json({
       error:
-        "Oops! We couldn't fetch the data from that URL. Please ensure the site is accessible and the URL is correct.",
+        "Failed to scrape the URL. Please ensure the site is reachable and the URL is correct.",
     });
   }
 }
