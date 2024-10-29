@@ -16,13 +16,13 @@ const Card = ({ data }) => {
   };
 
   return (
-    <div className="flex flex-col gap-2 w-[22rem] sm:w-auto px-4" aria-label="Scraped data card">
+    <div className="flex flex-col gap-2 px-2" aria-label="Scraped data card">
       <div className="px-2 flex items-center justify-end">
         <CopyButton source={data} />
       </div>
 
       <Link
-        className="thumbnail-shadow max-w-lg flex aspect-auto min-w-0 cursor-pointer flex-col gap-4 overflow-hidden rounded-xl bg-white p-4 transition-colors duration-300 hover:bg-gray-100"
+        className="thumbnail-shadow max-w-xl flex aspect-auto min-w-0 cursor-pointer flex-col gap-4 overflow-hidden rounded-xl bg-white p-4 transition-colors duration-300 hover:bg-gray-100"
         href={data.ogUrl || data.canonical}
         target="_blank"
       >

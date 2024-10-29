@@ -24,7 +24,9 @@ export default function Home() {
     setError("");
     setData(null);
     try {
-      const response = await fetch(`/api/scrape?url=${url}`);
+      const response = await fetch(
+        `/api/scrape?url=${encodeURIComponent(url)}`
+      );
       const result = await response.json();
       if (response.ok) {
         setData(result);
@@ -80,9 +82,7 @@ export default function Home() {
       </form>
 
       {loading && <Spinner />}
-
       {error && <ErrorBadge error={error} />}
-
       {data && <Card data={data} />}
     </main>
   );
