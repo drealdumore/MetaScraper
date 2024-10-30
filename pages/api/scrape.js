@@ -1,13 +1,11 @@
 import axios from "axios";
 import cheerio from "cheerio";
 
-// Simple in-memory cache
 const cache = new Map();
 
 export default async function handler(req, res) {
   const { url } = req.query;
 
-  // URL Validation
   try {
     new URL(url);
   } catch (e) {
@@ -17,14 +15,12 @@ export default async function handler(req, res) {
     });
   }
 
-  // Check if URL starts with http or https
   if (!url.startsWith("https://") && !url.startsWith("http://")) {
     return res.status(400).json({
       error: "Please make sure your URL starts with 'https://' or 'http://'.",
     });
   }
 
-  // Check cache
   if (cache.has(url)) {
     return res.status(200).json(cache.get(url));
   }
@@ -33,7 +29,6 @@ export default async function handler(req, res) {
     const { data } = await axios.get(url);
     const $ = cheerio.load(data);
 
-    // Extract metadata
     const title =
       $("head title").text() || $('meta[property="og:title"]').attr("content");
     const description =
@@ -72,7 +67,6 @@ export default async function handler(req, res) {
         socialLinks.push({ platform: "Instagram", url: link });
     });
 
-    // Prepare metadata object
     const metadata = {
       title: title || ogTitle || twitterTitle || "Title not found",
       description:
@@ -92,29 +86,33 @@ export default async function handler(req, res) {
         socialLinks.length > 0 ? socialLinks : "No social media links found",
     };
 
-    // Check for default values in metadata
     const hasDefaultValues = Object.values(metadata).some(
       (value) => value.includes("not found") || value.includes("available")
     );
 
-    if (hasDefaultValues) {
-      return res
-        .status(400)
-        .json({ error: "The URL you provided doesn't have enough metadata." });
-    }
+    const responseData = {
+      metadata,
+      hasInsufficientMetadata: hasDefaultValues,
+    };
 
-    // Cache the result
-    cache.set(url, metadata);
+    cache.set(url, responseData);
 
-    // Return the metadata if all checks pass
-    res.status(200).json(metadata);
+    res.status(200).json(responseData);
   } catch (error) {
     console.error("Error fetching URL:", error.message);
 
-    console.error(error);
-    res.status(500).json({
-      error:
-        "Oops! We couldn't fetch the data from that URL. Please ensure the site is accessible and the URL is correct.",
-    });
+    if (axios.isAxiosError(error)) {
+      return res.status(500).json({
+        error: "Network error while fetching the URL. Please try again later.",
+      });
+    } else if (error.response && error.response.status) {
+      return res.status(error.response.status).json({
+        error: `Received a ${error.response.status} response from the server.`,
+      });
+    } else {
+      return res
+        .status(500)
+        .json({ error: "An unexpected error occurred. Please try again." });
+    }
   }
 }
