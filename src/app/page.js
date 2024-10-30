@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import ConfirmationModal from "@/components/Modal";
 import Spinner from "@/components/Spinner";
 import Badge from "@/components/Badge";
 import ErrorBadge from "@/components/ErrorBadge";
@@ -11,6 +12,8 @@ export default function Home() {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pendingData, setPendingData] = useState(null);
 
   const handleScrape = async (e) => {
     e.preventDefault();
@@ -28,8 +31,14 @@ export default function Home() {
         `/api/scrape?url=${encodeURIComponent(url)}`
       );
       const result = await response.json();
+
       if (response.ok) {
-        setData(result);
+        if (result.hasInsufficientMetadata) {
+          setPendingData(result.metadata);
+          setIsModalOpen(true);
+        } else {
+          setData(result.metadata);
+        }
       } else {
         setError(result.error);
       }
@@ -38,6 +47,15 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleConfirm = () => {
+    setIsModalOpen(false);
+    setData(pendingData);
+  };
+
+  const handleClose = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -68,12 +86,12 @@ export default function Home() {
           onChange={(e) => setUrl(e.target.value)}
           placeholder="Enter website URL"
           aria-label="Website URL input"
-          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 duration-300 [transition-timing-function:cubic-bezier(0.175,0.885,0.32,1.275)]"
+          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         />
 
         <button
           disabled={!url}
-          className="rounded-md bg-neutral-950 disabled:bg-neutral-950/75 px-5 py-2 text-white duration-300 [transition-timing-function:cubic-bezier(0.175,0.885,0.32,1.275)] active:tranneutral-y-1 active:scale-x-110 active:scale-y-90"
+          className="rounded-md bg-neutral-950 disabled:bg-neutral-950/75 px-5 py-2 text-white"
           type="submit"
           aria-label="Submit URL to scrape"
         >
@@ -84,6 +102,12 @@ export default function Home() {
       {loading && <Spinner />}
       {error && <ErrorBadge error={error} />}
       {data && <Card data={data} />}
+
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={handleClose}
+        onConfirm={handleConfirm}
+      />
     </main>
   );
 }
