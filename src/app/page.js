@@ -60,14 +60,14 @@ export default function Home() {
 
   return (
     <main className="mx-auto flex max-w-xl flex-col items-center gap-4">
-      <div className="mx-auto my-16 flex max-w-xl flex-col items-center gap-4">
+      <div className="mx-auto my-16 mb-8 flex max-w-xl flex-col items-center gap-4">
         <Badge
           title="Proudly Open Source ⚡️"
           href="https://github.com/Drealdumore/MetaScraper"
           aria="Visit the GitHub repository for MetaScraper"
         />
 
-        <h1 className="text-center font-cal font_cal text-2xl md:text-5xl leading-tight bg-gradient-to-tl from-0% from-[hsl(var(--muted))] to-30% to-[hsl(var(--foreground))] bg-clip-text text-transparent">
+        <h1 className="text-center font-cal font_cal text-3xl md:text-5xl leading-tight bg-gradient-to-tl from-0% from-[hsl(var(--muted))] to-30% to-[hsl(var(--foreground))] bg-clip-text text-transparent">
           MetaScraper.
         </h1>
         <h2 className="mx-auto max-w-md font-sans text-center text-[14px] md:text-lg text-muted-foreground md:max-w-xl md:text-xl">
