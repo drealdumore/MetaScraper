@@ -67,10 +67,10 @@ export default function Home() {
           aria="Visit the GitHub repository for MetaScraper"
         />
 
-        <h1 className="text-center font-cal font_cal text-5xl leading-tight bg-gradient-to-tl from-0% from-[hsl(var(--muted))] to-30% to-[hsl(var(--foreground))] bg-clip-text text-transparent">
+        <h1 className="text-center font-cal font_cal text-2xl md:text-5xl leading-tight bg-gradient-to-tl from-0% from-[hsl(var(--muted))] to-30% to-[hsl(var(--foreground))] bg-clip-text text-transparent">
           MetaScraper.
         </h1>
-        <h2 className="mx-auto max-w-md font-sans text-center text-lg text-muted-foreground md:max-w-xl md:text-xl">
+        <h2 className="mx-auto max-w-md font-sans text-center text-[14px] md:text-lg text-muted-foreground md:max-w-xl md:text-xl">
           Easily extract and retrieve metadata from any website, including the
           title, OG image, and description.
         </h2>
